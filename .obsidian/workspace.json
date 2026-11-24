@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "src/content/works/LearnOpenGL.md",
+                "file": "src/content/notes/LearnOpenGL.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -189,7 +189,7 @@
       "bases:新建数据库": false
     }
   },
-  "active": "716feae2dd3fb051",
+  "active": "d3be9734b8351193",
   "lastOpenFiles": [
     "dist/works/index.html",
     "dist/works",
