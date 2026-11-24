@@ -1,16 +1,16 @@
 export const SITE = {
   // 网站名称与你的署名（修改这里即可全局生效）
   brand: 'TA.FOLIO',
-  author: '你的名字',
+  author: '好bu',
   role: 'Technical Artist · 技术美术',
   title: 'TA.FOLIO — 技术美术作品集与笔记',
   description: '聚焦实时渲染、Shader 开发、程序化内容生成与 DCC 工具管线的技术美术作品集与技术笔记。',
 
   // 首页介绍
   heroTag: 'Technical Art · Graphics & Pipeline',
-  heroHeading: '用代码连接艺术与实时渲染',
+  heroHeading: '个人网站',
   heroSubtitle:
-    '这里记录我的技术美术作品、渲染效果拆解与日常技术笔记。关注实时着色器、风格化渲染、程序化资产以及提升美术生产效率的自动化工具。',
+    '这里记录我的作品与笔记。',
 
   // 联系方式与外部主页（留空字符串则自动隐藏）
   social: {
@@ -43,14 +43,14 @@ export const SITE = {
   // 经历时间线（显示在「关于」页面，按需修改）
   timeline: [
     {
-      period: '2025 — 至今',
+      period: '2026/11/24 — 至今',
       title: '技术美术 · 独立学习与项目实践',
       detail: '专注实时风格化渲染、URP 自定义渲染管线与程序化环境工具链研究，持续沉淀公开技术笔记。',
     },
     {
-      period: '2023 — 2025',
-      title: '图形学与 DCC 工具探索',
-      detail: '系统学习计算机图形学基础、线性代数与 Shader 编写，开发多款 Blender/Unity 美术效率脚本。',
+      period: '以后会有什么呢？',
+      title: '',
+      detail: '',
     },
   ],
 } as const;

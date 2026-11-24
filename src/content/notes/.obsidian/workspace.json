@@ -1,24 +1,20 @@
 {
   "main": {
-    "id": "055727f8657d09bb",
+    "id": "0e17c542417e92af",
     "type": "split",
     "children": [
       {
-        "id": "6d03334d44823fc9",
+        "id": "b08e802d8318646f",
         "type": "tabs",
         "children": [
           {
-            "id": "13f285da3a822a47",
+            "id": "6222e5c6f5b54daf",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "欢迎.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "欢迎"
+              "title": "新标签页"
             }
           }
         ]
@@ -27,15 +23,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "3bd70409c284b796",
+    "id": "dd085fa9d6721f3f",
     "type": "split",
     "children": [
       {
-        "id": "1a6680a5a5957a86",
+        "id": "8d68fadef4e7de7a",
         "type": "tabs",
         "children": [
           {
-            "id": "b980a04634a4d548",
+            "id": "164bb38747d87419",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -50,7 +46,7 @@
             }
           },
           {
-            "id": "4be404c78fa0455a",
+            "id": "2b17761c50201b63",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -67,7 +63,7 @@
             }
           },
           {
-            "id": "73131bccee7005ad",
+            "id": "235e6e00ef20c90e",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -86,20 +82,19 @@
     "width": 300
   },
   "right": {
-    "id": "683f3d428a75192e",
+    "id": "cf6a5b00622aa5ad",
     "type": "split",
     "children": [
       {
-        "id": "07e5057f5f2a533d",
+        "id": "7caa2edf7164eddb",
         "type": "tabs",
         "children": [
           {
-            "id": "10e6d61bf6459bf1",
+            "id": "1ddfd1fe2f52d40e",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "欢迎.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,12 +108,11 @@
             }
           },
           {
-            "id": "3fed2be573bd5bb5",
+            "id": "d42bca8183d86d63",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "欢迎.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -127,7 +121,7 @@
             }
           },
           {
-            "id": "7065cadbfbaf06a5",
+            "id": "94c919dcfb6afae4",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -142,7 +136,7 @@
             }
           },
           {
-            "id": "6ecb6e31348def6a",
+            "id": "3dca4bd1ebe594d6",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -156,12 +150,11 @@
             }
           },
           {
-            "id": "4b74c25ea444c72b",
+            "id": "067678283e5ff7c1",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "欢迎.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -188,8 +181,6 @@
       "bases:新建数据库": false
     }
   },
-  "active": "13f285da3a822a47",
-  "lastOpenFiles": [
-    "欢迎.md"
-  ]
+  "active": "6222e5c6f5b54daf",
+  "lastOpenFiles": []
 }
