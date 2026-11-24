@@ -1,0 +1,65 @@
+---
+import { SITE } from '../config/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-left">
+      <span class="footer-brand">{SITE.brand}</span>
+      <span class="footer-sep">/</span>
+      <span class="footer-copy">© {year} {SITE.author} · Built with Astro</span>
+    </div>
+
+    <div class="footer-links">
+      {SITE.social.github && <a href={SITE.social.github} target="_blank" rel="noreferrer">GitHub</a>}
+      {SITE.social.artstation && <a href={SITE.social.artstation} target="_blank" rel="noreferrer">ArtStation</a>}
+      {SITE.social.bilibili && <a href={SITE.social.bilibili} target="_blank" rel="noreferrer">Bilibili</a>}
+      {SITE.social.email && <a href={`mailto:${SITE.social.email}`}>Email</a>}
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+    margin-top: 40px;
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+  }
+
+  .footer-brand {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .footer-links a {
+    transition: color 0.18s ease;
+  }
+
+  .footer-links a:hover {
+    color: var(--accent);
+  }
+</style>

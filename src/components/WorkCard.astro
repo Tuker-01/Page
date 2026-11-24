@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../utils/url';
+
+interface Props {
+  work: CollectionEntry<'works'>;
+}
+
+const { work } = Astro.props;
+const { title, summary, category, engine, year, cover, tags } = work.data;
+---
+
+<a
+  href={withBase(`/works/${work.id}`)}
+  class="work-card"
+  data-category={category}
+>
+  <div class="work-card-media">
+    <img src={withBase(cover)} alt={title} loading="lazy" />
+    <span class="work-card-badge">{engine}</span>
+  </div>
+  <div class="work-card-body">
+    <div class="work-card-meta">
+      <span>{category}</span>
+      <span>{year}</span>
+    </div>
+    <h3 class="work-card-title">{title}</h3>
+    <p class="work-card-summary">{summary}</p>
+    {
+      tags.length > 0 && (
+        <div class="work-card-tags">
+          {tags.slice(0, 4).map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</a>

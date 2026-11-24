@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../utils/url';
+import { estimateReadingTime, formatDate } from '../utils/readingTime';
+
+interface Props {
+  note: CollectionEntry<'notes'>;
+}
+
+const { note } = Astro.props;
+const { title, summary, category, date, tags } = note.data;
+const readingMinutes = estimateReadingTime(note.body);
+---
+
+<a
+  href={withBase(`/notes/${note.id}`)}
+  class="note-row"
+  data-category={category}
+  data-tags={tags.join(',')}
+  data-search={`${title} ${summary} ${category} ${tags.join(' ')}`.toLowerCase()}
+>
+  <time class="note-row-date" datetime={date.toISOString()}>
+    {formatDate(date)}
+  </time>
+
+  <div class="note-row-main">
+    <div class="note-row-top">
+      <span class="tag tag-accent">{category}</span>
+      <h3 class="note-row-title">{title}</h3>
+    </div>
+    <p class="note-row-summary">{summary}</p>
+    {
+      tags.length > 0 && (
+        <div class="note-row-tags">
+          {tags.map((tag) => (
+            <span class="tag">#{tag}</span>
+          ))}
+        </div>
+      )
+    }
+  </div>
+
+  <span class="note-row-read">{readingMinutes} min</span>
+</a>

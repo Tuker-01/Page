@@ -1,0 +1,120 @@
+---
+export interface HeadingItem {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: HeadingItem[];
+  title?: string;
+}
+
+const { headings, title = '目录大纲' } = Astro.props;
+const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{
+  filtered.length > 0 && (
+    <nav class="toc" aria-label={title}>
+      <div class="toc-title">{title}</div>
+      <ul class="toc-list">
+        {filtered.map((h) => (
+          <li class:list={['toc-item', { 'is-sub': h.depth === 3 }]}>
+            <a href={`#${h.slug}`} class="toc-link" data-toc-slug={h.slug}>
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<style>
+  .toc {
+    padding: 16px 18px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+  }
+
+  .toc-title {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .toc-link {
+    display: block;
+    padding: 5px 8px;
+    border-left: 2px solid transparent;
+    font-size: 0.84rem;
+    line-height: 1.45;
+    color: var(--text-secondary);
+    border-radius: 0 6px 6px 0;
+    transition: color 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+  }
+
+  .toc-item.is-sub .toc-link {
+    padding-left: 20px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .toc-link:hover {
+    color: var(--text);
+    background: var(--bg-subtle);
+  }
+
+  .toc-link.is-active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: var(--accent-soft);
+    font-weight: 550;
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const links = Array.from(document.querySelectorAll('.toc-link'));
+    if (!links.length) return;
+
+    const headings = links
+      .map((link) => document.getElementById(link.getAttribute('data-toc-slug') || ''))
+      .filter(Boolean);
+
+    const setActive = (id) => {
+      links.forEach((l) => {
+        l.classList.toggle('is-active', l.getAttribute('data-toc-slug') === id);
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length > 0) {
+          setActive(visible[0].target.id);
+        }
+      },
+      { rootMargin: '-84px 0px -70% 0px', threshold: 0 }
+    );
+
+    headings.forEach((h) => observer.observe(h));
+    if (headings[0]) setActive(headings[0].id);
+  });
+</script>

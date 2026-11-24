@@ -1,0 +1,253 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TOC from '../../components/TOC.astro';
+import { withBase } from '../../utils/url';
+import { formatDate } from '../../utils/readingTime';
+
+export async function getStaticPaths() {
+  const works = (await getCollection('works')).sort(
+    (a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime()
+  );
+
+  return works.map((work, index) => ({
+    params: { slug: work.id },
+    props: {
+      work,
+      prev: index > 0 ? works[index - 1] : null,
+      next: index < works.length - 1 ? works[index + 1] : null,
+    },
+  }));
+}
+
+const { work, prev, next } = Astro.props;
+const { Content, headings } = await render(work);
+const { title, summary, category, engine, year, date, cover, video, role, tags, repoUrl, demoUrl } =
+  work.data;
+---
+
+<BaseLayout title={title} description={summary}>
+  <article class="section">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="面包屑">
+        <a href={withBase('/')}>首页</a>
+        <span>/</span>
+        <a href={withBase('/works')}>作品集</a>
+        <span>/</span>
+        <span>{category}</span>
+      </nav>
+
+      <header class="work-header">
+        <div class="work-header-top">
+          <span class="tag tag-accent">{category}</span>
+          <span class="tag tag-warm">{engine}</span>
+          <span class="work-year">{year}</span>
+        </div>
+        <h1 class="work-title">{title}</h1>
+        <p class="work-summary">{summary}</p>
+      </header>
+
+      <div class="work-showcase">
+        {
+          video ? (
+            <video src={withBase(video)} poster={withBase(cover)} controls loop muted playsinline />
+          ) : (
+            <img src={withBase(cover)} alt={title} />
+          )
+        }
+      </div>
+
+      <div class="spec-bar">
+        <div class="spec-item">
+          <span class="spec-label">引擎 / 软件</span>
+          <span class="spec-val">{engine}</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">职责 / 形式</span>
+          <span class="spec-val">{role}</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">完成日期</span>
+          <span class="spec-val">{formatDate(date)}</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">相关链接</span>
+          <div class="spec-links">
+            {repoUrl && (
+              <a href={repoUrl} target="_blank" rel="noreferrer" class="spec-link">
+                源码仓库 ↗
+              </a>
+            )}
+            {demoUrl && (
+              <a href={demoUrl} target="_blank" rel="noreferrer" class="spec-link">
+                在线演示 ↗
+              </a>
+            )}
+            {!repoUrl && !demoUrl && <span class="spec-muted">仅图文拆解</span>}
+          </div>
+        </div>
+      </div>
+
+      <div class="article-layout">
+        <div class="article-main">
+          <div class="prose">
+            <Content />
+          </div>
+
+          {
+            tags.length > 0 && (
+              <div class="article-tags">
+                {tags.map((t) => (
+                  <span class="tag">#{t}</span>
+                ))}
+              </div>
+            )
+          }
+
+          <nav class="pager" aria-label="相邻作品">
+            {
+              prev ? (
+                <a href={withBase(`/works/${prev.id}`)} class="pager-link">
+                  <span class="pager-label">← 上一个作品</span>
+                  <span class="pager-title">{prev.data.title}</span>
+                </a>
+              ) : (
+                <div />
+              )
+            }
+            {
+              next && (
+                <a href={withBase(`/works/${next.id}`)} class="pager-link is-next">
+                  <span class="pager-label">下一个作品 →</span>
+                  <span class="pager-title">{next.data.title}</span>
+                </a>
+              )
+            }
+          </nav>
+        </div>
+
+        <aside class="article-aside">
+          <TOC headings={headings} title="拆解目录" />
+        </aside>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .work-header {
+    margin-bottom: 28px;
+  }
+
+  .work-header-top {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .work-year {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-left: 4px;
+  }
+
+  .work-title {
+    font-size: clamp(1.7rem, 3.2vw, 2.35rem);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+  }
+
+  .work-summary {
+    margin: 0;
+    font-size: 1.02rem;
+    color: var(--text-secondary);
+    max-width: 66ch;
+    line-height: 1.7;
+  }
+
+  .work-showcase {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 24px;
+  }
+
+  .work-showcase img,
+  .work-showcase video {
+    width: 100%;
+    max-height: 560px;
+    object-fit: cover;
+  }
+
+  .spec-bar {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    padding: 18px 22px;
+    margin-bottom: 40px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+  }
+
+  .spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .spec-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+  }
+
+  .spec-val {
+    font-size: 0.92rem;
+    font-weight: 560;
+    color: var(--text);
+  }
+
+  .spec-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .spec-link {
+    font-size: 0.9rem;
+    color: var(--accent);
+    font-weight: 550;
+  }
+
+  .spec-link:hover {
+    text-decoration: underline;
+  }
+
+  .spec-muted {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 820px) {
+    .spec-bar {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkCard from '../../components/WorkCard.astro';
+
+const works = (await getCollection('works')).sort(
+  (a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime()
+);
+
+const categories = ['全部', 'Shader & 渲染', '程序化资产', '工具与管线', '特效 VFX'];
+---
+
+<BaseLayout title="作品集" description="技术美术作品集：实时着色器、渲染管线、程序化资产与 DCC 工具开发。">
+  <section class="page-head studio-backdrop">
+    <div class="container">
+      <p class="section-eyebrow">Portfolio</p>
+      <h1 class="page-title">作品集</h1>
+      <p class="page-desc">
+        按方向整理的技术美术项目与效果拆解，点击卡片查看实现思路、关键代码与性能分析。
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="filter-bar" role="tablist" aria-label="作品分类筛选">
+        {
+          categories.map((cat, idx) => (
+            <button
+              type="button"
+              class:list={['filter-pill', { 'is-active': idx === 0 }]}
+              data-filter={cat}
+            >
+              {cat}
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="works-grid" id="works-grid">
+        {works.map((work) => <WorkCard work={work} />)}
+      </div>
+
+      <p class="empty-tip" id="works-empty" hidden>该分类下暂时还没有作品。</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding: 52px 0 36px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-title {
+    font-size: clamp(1.75rem, 3vw, 2.3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+  }
+
+  .page-desc {
+    margin: 0;
+    color: var(--text-secondary);
+    max-width: 58ch;
+  }
+
+  .empty-tip {
+    text-align: center;
+    padding: 48px 0;
+    color: var(--text-muted);
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = Array.from(document.querySelectorAll('[data-filter]'));
+    const cards = Array.from(document.querySelectorAll('#works-grid .work-card'));
+    const emptyTip = document.getElementById('works-empty');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-filter');
+        buttons.forEach((b) => b.classList.toggle('is-active', b === btn));
+
+        let visibleCount = 0;
+        cards.forEach((card) => {
+          const match = target === '全部' || card.getAttribute('data-category') === target;
+          card.style.display = match ? '' : 'none';
+          if (match) visibleCount++;
+        });
+
+        if (emptyTip) emptyTip.hidden = visibleCount > 0;
+      });
+    });
+  });
+</script>

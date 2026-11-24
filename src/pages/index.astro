@@ -1,0 +1,375 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkCard from '../components/WorkCard.astro';
+import NoteItem from '../components/NoteItem.astro';
+import { SITE } from '../config/site';
+import { withBase } from '../utils/url';
+
+const allWorks = (await getCollection('works')).sort(
+  (a, b) => a.data.order - b.data.order || b.data.date.getTime() - a.data.date.getTime()
+);
+const featuredWorks = allWorks.filter((w) => w.data.featured).slice(0, 4);
+const displayWorks = featuredWorks.length > 0 ? featuredWorks : allWorks.slice(0, 4);
+
+const latestNotes = (await getCollection('notes'))
+  .filter((n) => !n.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 5);
+
+const focusPillars = [
+  { code: '01', name: '实时渲染与 Shader', desc: 'NPR 风格化、水体植被、自定义 Render Pass' },
+  { code: '02', name: '程序化资产生成', desc: 'Houdini HDA、几何节点、地形与场景管线' },
+  { code: '03', name: 'DCC 工具与自动化', desc: 'Python / C# 美术提效脚本、规范检测' },
+];
+---
+
+<BaseLayout title={SITE.title} description={SITE.description}>
+  <section class="hero studio-backdrop">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="hero-tag">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>{SITE.heroTag}</span>
+        </div>
+        <h1 class="hero-title">{SITE.heroHeading}</h1>
+        <p class="hero-subtitle">{SITE.heroSubtitle}</p>
+
+        <div class="hero-actions">
+          <a href={withBase('/works')} class="btn btn-primary">
+            浏览作品集 <span class="arrow">→</span>
+          </a>
+          <a href={withBase('/notes')} class="btn btn-secondary">
+            阅读技术笔记
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-viewport" aria-label="实时程序化波形视口装饰">
+        <div class="viewport-bar">
+          <span class="viewport-title">VIEWPORT · PROCEDURAL MESH</span>
+          <span class="viewport-fps" id="viewport-fps">60 FPS</span>
+        </div>
+        <div class="viewport-stage">
+          <canvas id="ta-canvas" width="460" height="270"></canvas>
+        </div>
+        <div class="viewport-footer">
+          <span>Shader / Wireframe</span>
+          <span>Works: {allWorks.length} · Notes: {latestNotes.length}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container pillars">
+      {
+        focusPillars.map((item) => (
+          <div class="pillar-card">
+            <span class="pillar-code">{item.code}</span>
+            <div>
+              <h2 class="pillar-name">{item.name}</h2>
+              <p class="pillar-desc">{item.desc}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Selected Works</p>
+          <h2 class="section-title">精选作品</h2>
+        </div>
+        <a href={withBase('/works')} class="section-link">
+          查看全部作品 <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <div class="works-grid">
+        {displayWorks.map((work) => <WorkCard work={work} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <p class="section-eyebrow">Technical Notes</p>
+          <h2 class="section-title">最新技术笔记</h2>
+        </div>
+        <a href={withBase('/notes')} class="section-link">
+          进入笔记目录 <span class="arrow">→</span>
+        </a>
+      </div>
+
+      <div class="note-list">
+        {latestNotes.map((note) => <NoteItem note={note} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 68px 0 44px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
+    gap: 44px;
+    align-items: center;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+
+  .pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 3.8vw, 2.85rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    margin: 0 0 18px;
+  }
+
+  .hero-subtitle {
+    margin: 0 0 28px;
+    font-size: 1rem;
+    line-height: 1.78;
+    color: var(--text-secondary);
+    max-width: 54ch;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* Subtle Studio Viewport Card */
+  .hero-viewport {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-strong);
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+
+  .viewport-bar,
+  .viewport-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .viewport-bar {
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-subtle);
+  }
+
+  .viewport-footer {
+    border-top: 1px solid var(--border);
+  }
+
+  .viewport-fps {
+    color: var(--accent);
+  }
+
+  .viewport-stage {
+    position: relative;
+    height: 248px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 45%, var(--accent-soft), transparent 72%);
+  }
+
+  #ta-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Three Structural Pillars */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 44px;
+  }
+
+  .pillar-card {
+    display: flex;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+  }
+
+  .pillar-code {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    padding-top: 2px;
+  }
+
+  .pillar-name {
+    margin: 0 0 4px;
+    font-size: 0.96rem;
+    font-weight: 620;
+  }
+
+  .pillar-desc {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  @media (max-width: 920px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .pillars {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script is:inline>
+  // 轻量程序化线框波浪视口（无外部依赖，跟随深浅主题自动适配）
+  (() => {
+    const canvas = document.getElementById('ta-canvas');
+    if (!(canvas instanceof HTMLCanvasElement)) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let w = 0;
+    let h = 0;
+    let mouseX = 0.5;
+    let mouseY = 0.5;
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      w = rect.width;
+      h = rect.height;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    resize();
+    window.addEventListener('resize', resize);
+    canvas.addEventListener('mousemove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      mouseX = (e.clientX - r.left) / r.width;
+      mouseY = (e.clientY - r.top) / r.height;
+    });
+
+    const cols = 22;
+    const rows = 13;
+    let t = 0;
+
+    const draw = () => {
+      t += 0.014;
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      ctx.clearRect(0, 0, w, h);
+
+      const cx = w * 0.5;
+      const cy = h * 0.56;
+      const tilt = 0.52 + (mouseY - 0.5) * 0.12;
+      const yaw = (mouseX - 0.5) * 0.25;
+      const spacingX = (w * 0.78) / cols;
+      const spacingZ = (h * 0.85) / rows;
+
+      const pts = [];
+      for (let r = 0; r <= rows; r++) {
+        const rowPts = [];
+        for (let c = 0; c <= cols; c++) {
+          const gx = (c - cols / 2) * spacingX;
+          const gz = (r - rows / 2) * spacingZ;
+          const dist = Math.hypot(c - cols / 2, r - rows / 2);
+          const elev =
+            Math.sin(c * 0.42 + t) * Math.cos(r * 0.38 - t * 0.7) * 16 +
+            Math.sin(dist * 0.55 - t * 1.2) * 8;
+
+          const rx = gx * Math.cos(yaw) - gz * Math.sin(yaw);
+          const rz = gx * Math.sin(yaw) + gz * Math.cos(yaw);
+          const perspective = 360 / (360 + rz + 110);
+          const sx = cx + rx * perspective;
+          const sy = cy + (rz * tilt - elev) * perspective;
+          rowPts.push({ x: sx, y: sy, elev });
+        }
+        pts.push(rowPts);
+      }
+
+      // 绘制横向和纵向等距线框
+      for (let r = 0; r <= rows; r++) {
+        ctx.beginPath();
+        for (let c = 0; c <= cols; c++) {
+          const p = pts[r][c];
+          if (c === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        }
+        const alpha = 0.16 + (r / rows) * 0.36;
+        ctx.strokeStyle = isLight
+          ? `rgba(3, 105, 161, ${alpha.toFixed(2)})`
+          : `rgba(114, 200, 245, ${alpha.toFixed(2)})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      for (let c = 0; c <= cols; c += 2) {
+        ctx.beginPath();
+        for (let r = 0; r <= rows; r++) {
+          const p = pts[r][c];
+          if (r === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        }
+        ctx.strokeStyle = isLight ? 'rgba(161, 98, 7, 0.16)' : 'rgba(226, 184, 135, 0.18)';
+        ctx.lineWidth = 0.85;
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(draw);
+    };
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      draw();
+    } else {
+      requestAnimationFrame(draw);
+    }
+  })();
+</script>

@@ -1,0 +1,234 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config/site';
+---
+
+<BaseLayout title="关于" description={`关于 ${SITE.author} — ${SITE.role}`}>
+  <section class="page-head studio-backdrop">
+    <div class="container">
+      <p class="section-eyebrow">About</p>
+      <h1 class="page-title">{SITE.author}</h1>
+      <p class="page-role">{SITE.role}</p>
+      <p class="page-desc">{SITE.heroSubtitle}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container about-stack">
+      <div>
+        <div class="section-header">
+          <div>
+            <p class="section-eyebrow">Skill Matrix</p>
+            <h2 class="section-title">技术栈与能力方向</h2>
+          </div>
+        </div>
+
+        <div class="skills-grid">
+          {
+            SITE.skills.map((group) => (
+              <div class="skill-card">
+                <h3 class="skill-group">{group.group}</h3>
+                <ul class="skill-list">
+                  {group.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div>
+        <div class="section-header">
+          <div>
+            <p class="section-eyebrow">Timeline</p>
+            <h2 class="section-title">经历与方向</h2>
+          </div>
+        </div>
+
+        <div class="timeline">
+          {
+            SITE.timeline.map((item) => (
+              <div class="timeline-item">
+                <span class="timeline-period">{item.period}</span>
+                <div>
+                  <h3 class="timeline-title">{item.title}</h3>
+                  <p class="timeline-detail">{item.detail}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <div>
+          <p class="section-eyebrow">Contact</p>
+          <h2 class="contact-title">交流与合作</h2>
+          <p class="contact-desc">欢迎探讨实时渲染、风格化着色器、Houdini 程序化流程或管线工具开发。</p>
+        </div>
+        <div class="contact-links">
+          {SITE.social.email && (
+            <a href={`mailto:${SITE.social.email}`} class="btn btn-primary">
+              发送邮件
+            </a>
+          )}
+          {SITE.social.github && (
+            <a href={SITE.social.github} target="_blank" rel="noreferrer" class="btn btn-secondary">
+              GitHub ↗
+            </a>
+          )}
+          {SITE.social.artstation && (
+            <a href={SITE.social.artstation} target="_blank" rel="noreferrer" class="btn btn-secondary">
+              ArtStation ↗
+            </a>
+          )}
+          {SITE.social.bilibili && (
+            <a href={SITE.social.bilibili} target="_blank" rel="noreferrer" class="btn btn-secondary">
+              Bilibili ↗
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-title {
+    font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+  }
+
+  .page-role {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin: 0 0 16px;
+  }
+
+  .page-desc {
+    margin: 0;
+    color: var(--text-secondary);
+    max-width: 60ch;
+    line-height: 1.75;
+  }
+
+  .about-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 52px;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .skill-card {
+    padding: 22px 24px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+  }
+
+  .skill-group {
+    margin: 0 0 14px;
+    font-size: 1rem;
+    font-weight: 630;
+    color: var(--accent);
+  }
+
+  .skill-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.8;
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 20px;
+    padding: 20px 22px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: var(--bg-elevated);
+  }
+
+  .timeline-period {
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    color: var(--accent-warm);
+    padding-top: 2px;
+  }
+
+  .timeline-title {
+    margin: 0 0 6px;
+    font-size: 1.02rem;
+    font-weight: 620;
+  }
+
+  .timeline-detail {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .contact-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 28px 30px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-strong);
+    background: var(--bg-elevated);
+  }
+
+  .contact-title {
+    margin: 0 0 6px;
+    font-size: 1.3rem;
+  }
+
+  .contact-desc {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.94rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  @media (max-width: 720px) {
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .timeline-item {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+  }
+</style>
