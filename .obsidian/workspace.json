@@ -191,6 +191,17 @@
   },
   "active": "716feae2dd3fb051",
   "lastOpenFiles": [
+    "dist/works/index.html",
+    "dist/works",
+    "dist/notes/learnopengl/index.html",
+    "dist/notes/learnopengl",
+    "dist/notes/index.html",
+    "dist/notes",
+    "dist/index.html",
+    "dist/about/index.html",
+    "dist/about",
+    "dist/pages/works/_slug_.astro.mjs",
+    "dist/pages/notes/_slug_.astro.mjs",
     "README.md",
     "src/content/notes/LearnOpenGL.md"
   ]

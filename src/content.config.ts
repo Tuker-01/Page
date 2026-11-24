@@ -26,7 +26,7 @@ const notes = defineCollection({
   schema: z.object({
     title: z.string(),
     summary: z.string(),
-    category: z.enum(['渲染管线', 'Shader 算法', 'DCC 工具开发', '性能优化', '图形学基础']),
+    category: z.string().default('技术笔记'),
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
