@@ -17,7 +17,7 @@ export const SITE = {
     github: 'https://github.com/your-username',
     artstation: '',
     bilibili: '',
-    email: 'hello@example.com',
+    email: '1249448394@qq.com',
   },
 
   // 技能矩阵（显示在「关于」页面）
