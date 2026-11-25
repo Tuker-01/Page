@@ -96,7 +96,8 @@ glBindObject(GL_WINDOW_TARGET, 0);
 
 ### 创建窗口
 
-#### GLFW
+搭建GLFW与GLEW操作繁琐，看这一部分
+https://learnopengl-cn.readthedocs.io/zh/latest/01%20Getting%20started/02%20Creating%20a%20window/
 
-GLFW提供了一些渲染物体所需的最低限度的接口。
-	1.允许用户创建OpenGL上下文
+
+

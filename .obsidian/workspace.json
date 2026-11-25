@@ -11,14 +11,12 @@
             "id": "d3be9734b8351193",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "src/content/notes/LearnOpenGL.md",
-                "mode": "source",
-                "source": false
+                "file": "src/content/notes/image/Pasted image 20261125095826.png"
               },
-              "icon": "lucide-file",
-              "title": "LearnOpenGL"
+              "icon": "lucide-image",
+              "title": "Pasted image 20261125095826"
             }
           }
         ]
@@ -83,7 +81,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 267.1000061035156
   },
   "right": {
     "id": "fee64a93d5fd5bfa",
@@ -161,7 +159,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "src/content/notes/LearnOpenGL.md",
+                "file": "src/content/notes/LearnOpenGL入门3三角形.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -191,6 +189,14 @@
   },
   "active": "d3be9734b8351193",
   "lastOpenFiles": [
+    "src/content/notes/image/Pasted image 20261125143122.png",
+    "src/content/notes/image/Pasted image 20261125095826.png",
+    "src/content/notes/LearnOpenGL入门3三角形.md",
+    "src/content/notes/LearnOpenGL入门2创建窗口.md",
+    "src/content/notes/LearnOpenGL入门1.md",
+    "2026-11-24.md",
+    "README.md",
+    "src/content/notes/image",
     "dist/works/index.html",
     "dist/works",
     "dist/notes/learnopengl/index.html",
@@ -199,10 +205,6 @@
     "dist/notes",
     "dist/index.html",
     "dist/about/index.html",
-    "dist/about",
-    "dist/pages/works/_slug_.astro.mjs",
-    "dist/pages/notes/_slug_.astro.mjs",
-    "README.md",
-    "src/content/notes/LearnOpenGL.md"
+    "dist/about"
   ]
 }
